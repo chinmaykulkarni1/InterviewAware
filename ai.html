@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Interviewer - InterviewAware</title>
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif']
+          },
+          colors: {
+            accent: {
+              blue: '#3b82f6',
+              amber: '#f59e0b',
+              sage: '#84cc16',
+              gold: '#fcd34d'
+            }
+          },
+          keyframes: {
+            'fade-in-up': {
+              '0%': { opacity: 0, transform: 'translateY(1rem)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' }
+            }
+          },
+          animation: {
+            'fade-in-up': 'fade-in-up 1s ease-out forwards'
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { @apply bg-[#0a0a0a] text-gray-300 font-sans; }
+  </style>
+</head>
+<body class="bg-[#0a0a0a] text-gray-300">
+  <nav id="nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <a href="index.html" class="flex items-center space-x-2">
+        <img src="images/samplelogo.png" class="h-8 w-8" alt="" />
+        <span class="font-display text-white text-xl">InterviewAware</span>
+      </a>
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="about.html" class="text-gray-300 hover:text-white transition-colors">About</a>
+        <div class="relative group">
+          <button class="flex items-center text-gray-300 hover:text-white transition-colors">Concepts<svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+          <div class="absolute left-0 mt-2 w-56 bg-black/80 backdrop-blur rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+            <a href="concept.html" class="block px-4 py-2 text-gray-300 hover:bg-accent-blue/20 hover:text-white">Electrical Engineering</a>
+            <span class="block px-4 py-2 text-gray-500">Mechanical Engineering (coming soon)</span>
+            <span class="block px-4 py-2 text-gray-500">Civil Engineering (coming soon)</span>
+            <span class="block px-4 py-2 text-gray-500">Chemical Engineering (coming soon)</span>
+          </div>
+        </div>
+        <div class="relative group">
+          <button class="flex items-center text-gray-300 hover:text-white transition-colors">Interview Questions<svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+          <div class="absolute left-0 mt-2 w-64 bg-black/80 backdrop-blur rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+            <a href="content.html" class="block px-4 py-2 text-gray-300 hover:bg-accent-blue/20 hover:text-white">Electrical Engineering</a>
+            <span class="block px-4 py-2 text-gray-500">Mechanical Engineering (coming soon)</span>
+            <span class="block px-4 py-2 text-gray-500">Civil Engineering (coming soon)</span>
+            <span class="block px-4 py-2 text-gray-500">Chemical Engineering (coming soon)</span>
+          </div>
+        </div>
+        <a href="ai.html" class="text-gray-300 hover:text-white transition-colors">AI Interviewer</a>
+      </div>
+      <a href="https://forms.gle/8aHq2fjXJQZP2PDN8" class="hidden md:inline-block rounded-full bg-accent-blue text-white px-5 py-2 font-medium hover:bg-opacity-80 transition">Sign Up</a>
+    </div>
+  </nav>
+  <main class="pt-32 max-w-3xl mx-auto px-6">
+    <h1 class="text-4xl font-bold text-white mb-6 font-display">AI Interviewer</h1>
+    <p class="mb-6">Practice hardware engineering interview questions.</p>
+    <div id="start-screen" class="text-center">
+      <button id="start-btn" class="bg-gradient-to-r from-accent-blue to-accent-amber text-black font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition">Start Quiz</button>
+    </div>
+    <div id="quiz" class="hidden">
+      <div id="progress" class="mb-4 text-sm text-gray-400"></div>
+      <div id="question-box" class="bg-black/40 p-6 rounded-lg shadow mb-4">
+        <div id="question-text" class="font-semibold mb-4"></div>
+        <div id="choices" class="space-y-3"></div>
+        <div id="explanation" class="mt-4 text-sm hidden"></div>
+      </div>
+      <button id="next-btn" class="bg-accent-blue text-white px-4 py-2 rounded hover:bg-opacity-80 transition hidden">Next Question</button>
+    </div>
+    <div id="result" class="hidden text-center">
+      <h2 class="text-2xl font-display text-white mb-4">Quiz Complete!</h2>
+      <p id="score" class="mb-4"></p>
+      <button id="restart-btn" class="bg-accent-amber text-black px-4 py-2 rounded hover:bg-opacity-80 transition">Restart</button>
+    </div>
+  </main>
+  <footer class="py-12 bg-black text-center text-sm text-gray-500 mt-24">© 2024 InterviewAware. All rights reserved.</footer>
+  <script>
+    const navEl = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 10) {
+        navEl.classList.add('bg-black/70','backdrop-blur');
+      } else {
+        navEl.classList.remove('bg-black/70','backdrop-blur');
+      }
+    });
+
+    const QUESTIONS = [
+      {
+        question: "What is the primary function of a differential signal pair like in PCIe or Ethernet?",
+        choices: [
+          "To transmit data with high noise immunity by using two complementary signals",
+          "To reduce power consumption in low-speed logic",
+          "To isolate analog and digital circuits completely",
+          "To increase bus capacitance for decoupling"
+        ],
+        answer: 0,
+        explanation: "Differential signals offer superior noise immunity and are used in high-speed interfaces like PCIe and Ethernet."
+      },
+      {
+        question: "Which instrument is best suited to analyze a high-speed signal’s rise time and overshoot?",
+        choices: ["Oscilloscope", "Multimeter", "Power supply", "Logic analyzer"],
+        answer: 0,
+        explanation: "Oscilloscopes visualize fast transients and timing characteristics of high-speed digital signals."
+      },
+      {
+        question: "What does DDR stand for in memory interfaces?",
+        choices: ["Double Data Rate", "Dynamic Drive Regulation", "Digital Direct Relay", "Distributed Device Routing"],
+        answer: 0,
+        explanation: "DDR transfers data on both rising and falling clock edges, doubling the throughput."
+      },
+      {
+        question: "What is the role of a decoupling capacitor in high-speed PCB design?",
+        choices: [
+          "To provide local charge storage and filter high-frequency noise on power lines",
+          "To step up voltage for logic gates",
+          "To generate clock signals for high-speed buses",
+          "To delay address decoding for memory"
+        ],
+        answer: 0,
+        explanation: "Decoupling capacitors stabilize voltage levels and suppress noise during fast transitions."
+      },
+      {
+        question: "Which of the following is a high-speed serial bus used in computing systems?",
+        choices: ["PCIe", "UART", "I2C", "PWM"],
+        answer: 0,
+        explanation: "PCIe (Peripheral Component Interconnect Express) is a high-speed interface used for connecting processors to peripherals."
+      },
+      {
+        question: "What is typically used to terminate high-speed transmission lines and prevent reflections?",
+        choices: [
+          "Series or parallel resistors matched to the characteristic impedance",
+          "Capacitive dividers",
+          "Crystal oscillators",
+          "Voltage regulators"
+        ],
+        answer: 0,
+        explanation: "Proper termination minimizes signal reflections that cause distortion in high-speed designs."
+      },
+      {
+        question: "Which layer in a multi-layer PCB is commonly used for distributing power?",
+        choices: ["Power plane", "Top signal layer", "Solder mask layer", "Silkscreen"],
+        answer: 0,
+        explanation: "Power planes ensure stable power delivery and help reduce impedance in high-performance PCBs."
+      },
+      {
+        question: "Why is trace length matching important in high-speed parallel buses?",
+        choices: [
+          "To ensure signals arrive simultaneously and avoid timing skew",
+          "To reduce power dissipation",
+          "To minimize physical board size",
+          "To isolate ground noise"
+        ],
+        answer: 0,
+        explanation: "Matched lengths reduce timing mismatch between data lines and clock/reference signals."
+      },
+      {
+        question: "Which unit is commonly used to specify high-speed signal data rates?",
+        choices: ["Gbps (Gigabits per second)", "Hz (Hertz)", "Volts", "Ohms"],
+        answer: 0,
+        explanation: "Gbps measures data rate, especially in high-speed digital links like PCIe or Ethernet."
+      },
+      {
+        question: "What does 'eye diagram' represent in high-speed signal testing?",
+        choices: [
+          "A composite waveform showing signal integrity and timing margin",
+          "A spectrum of frequency harmonics",
+          "A measure of thermal performance",
+          "A visual test for circuit boards under x-rays"
+        ],
+        answer: 0,
+        explanation: "Eye diagrams visualize timing and voltage margin in high-speed signals by overlapping multiple bits."
+      },
+      {
+        question: "Which of these tools is typically used to validate power supply ripple in hardware designs?",
+        choices: ["Oscilloscope", "Logic analyzer", "Vector network analyzer", "Pulse generator"],
+        answer: 0,
+        explanation: "Oscilloscopes measure ripple, transients, and noise in power delivery networks."
+      },
+      {
+        question: "What is a common cause of signal integrity issues in high-speed PCB designs?",
+        choices: [
+          "Impedance mismatch and poor return path routing",
+          "Use of low-speed connectors",
+          "Adding extra decoupling capacitors",
+          "Over-specifying power rails"
+        ],
+        answer: 0,
+        explanation: "Impedance mismatches lead to reflections, and poor return paths affect signal quality."
+      },
+      {
+        question: "Which component is essential in converting DC voltages efficiently for processor power rails?",
+        choices: ["Switching regulator", "Linear amplifier", "Level shifter", "Resistor divider"],
+        answer: 0,
+        explanation: "Switching regulators offer high-efficiency DC-DC conversion for power delivery."
+      },
+      {
+        question: "Which protocol is typically used for debugging or serial communication with microcontrollers?",
+        choices: ["UART", "DDR", "MIPI CSI", "Ethernet PHY"],
+        answer: 0,
+        explanation: "UART is commonly used for low-speed serial communication and firmware debugging."
+      },
+      {
+        question: "Why is thermal management critical in high-speed board design?",
+        choices: [
+          "To prevent overheating and ensure reliable performance of dense ICs",
+          "To improve analog input sensitivity",
+          "To synchronize bus latency",
+          "To reduce voltage overshoot on signals"
+        ],
+        answer: 0,
+        explanation: "High-speed components generate heat that must be dissipated to maintain function and lifespan."
+      },
+      {
+        question: "Which of the following tools is used for analyzing frequency domain behavior of high-speed interfaces?",
+        choices: ["Network analyzer", "Multimeter", "Logic analyzer", "Function generator"],
+        answer: 0,
+        explanation: "Network analyzers measure S-parameters and frequency response characteristics."
+      },
+      {
+        question: "What does 'EMC' refer to in PCB design?",
+        choices: [
+          "Electromagnetic compatibility — the ability of a device to function properly without emitting or being affected by EMI",
+          "Electromechanical contact resistance",
+          "Energy management controller",
+          "Embedded multi-core controller"
+        ],
+        answer: 0,
+        explanation: "EMC ensures the device does not interfere with or suffer from electromagnetic emissions."
+      },
+      {
+        question: "Which of the following would likely be found on a high-speed AI accelerator board?",
+        choices: [
+          "DDR memory, SerDes interfaces, and power management ICs",
+          "Potentiometers and 7-segment displays",
+          "Vacuum tubes and audio amplifiers",
+          "Pure analog signal chains"
+        ],
+        answer: 0,
+        explanation: "High-speed compute boards need fast memory, high-speed I/O, and advanced power delivery."
+      },
+      {
+        question: "What is the function of a BERT in high-speed testing?",
+        choices: [
+          "Bit Error Rate Tester — used to evaluate signal quality over a link",
+          "Buffered Edge Routing Timer",
+          "Basic Electrical Resistance Tool",
+          "Bus Expansion Register Table"
+        ],
+        answer: 0,
+        explanation: "BERTs measure how reliably a digital link transmits data under real-world conditions."
+      },
+      {
+        question: "What does signal de-embedding accomplish in signal integrity testing?",
+        choices: [
+          "It removes fixture or probe effects to accurately measure the DUT (Device Under Test)",
+          "It removes power supply noise from the data stream",
+          "It isolates ground loops from logic errors",
+          "It enables firmware decryption for link debugging"
+        ],
+        answer: 0,
+        explanation: "De-embedding ensures measurement reflects the true signal at the target component."
+      },
+      {
+        question: "Why is via stub removal important in high-speed designs?",
+        choices: [
+          "Stubs reflect signals, introducing distortion and loss at high frequencies",
+          "They help ground analog reference planes",
+          "They increase power handling capacity",
+          "They isolate power from clock domains"
+        ],
+        answer: 0,
+        explanation: "Via stubs act as unterminated transmission lines, degrading signal quality at high speed."
+      },
+      {
+        question: "What does MIPI typically refer to in high-speed system design?",
+        choices: [
+          "A set of interface standards for cameras and displays",
+          "Memory interleaving protocols for DRAM",
+          "Motor integrated phase inverter",
+          "Machine intelligence power isolation"
+        ],
+        answer: 0,
+        explanation: "MIPI (Mobile Industry Processor Interface) standards define high-speed serial interfaces for sensors and displays."
+      },
+      {
+        question: "What is an example of a use-case for controlled impedance routing?",
+        choices: [
+          "Routing DDR data lines to match impedance and prevent reflections",
+          "Connecting LED strips for visual debugging",
+          "Interfacing low-frequency UART signals",
+          "Routing VCC traces to bypass capacitors"
+        ],
+        answer: 0,
+        explanation: "Controlled impedance routing ensures reliable signal integrity at high speeds."
+      },
+      {
+        question: "What is the function of a SerDes block in a high-speed system?",
+        choices: [
+          "Serializes and deserializes data for transmission over fewer high-speed lanes",
+          "Generates PWM signals for motor control",
+          "Converts analog audio signals to digital",
+          "Regulates linear power rails"
+        ],
+        answer: 0,
+        explanation: "SerDes blocks convert parallel data to serial for high-speed communication."
+      },
+      {
+        question: "Why is eye height and eye width critical in high-speed signal testing?",
+        choices: [
+          "They represent voltage and timing margin respectively in signal integrity analysis",
+          "They measure thermal coupling between layers",
+          "They control EMI emissions",
+          "They define impedance of differential pairs"
+        ],
+        answer: 0,
+        explanation: "Smaller eye openings indicate poorer signal integrity and reduced noise margins."
+      }
+    ];
+
+    const startScreen = document.getElementById('start-screen');
+    const startBtn = document.getElementById('start-btn');
+    const quizEl = document.getElementById('quiz');
+    const progressEl = document.getElementById('progress');
+    const questionText = document.getElementById('question-text');
+    const choicesEl = document.getElementById('choices');
+    const explanationEl = document.getElementById('explanation');
+    const nextBtn = document.getElementById('next-btn');
+    const resultEl = document.getElementById('result');
+    const scoreEl = document.getElementById('score');
+    const restartBtn = document.getElementById('restart-btn');
+
+    let current = 0;
+    let score = 0;
+
+    startBtn.addEventListener('click', () => {
+      startScreen.classList.add('hidden');
+      quizEl.classList.remove('hidden');
+      current = 0;
+      score = 0;
+      showQuestion();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      current++;
+      if (current >= QUESTIONS.length) {
+        quizEl.classList.add('hidden');
+        resultEl.classList.remove('hidden');
+        scoreEl.textContent = `You scored ${score} out of ${QUESTIONS.length}.`;
+      } else {
+        showQuestion();
+      }
+    });
+
+    restartBtn.addEventListener('click', () => {
+      resultEl.classList.add('hidden');
+      startScreen.classList.remove('hidden');
+    });
+
+    function showQuestion() {
+      const q = QUESTIONS[current];
+      progressEl.textContent = `Question ${current + 1} of ${QUESTIONS.length}`;
+      questionText.textContent = q.question;
+      choicesEl.innerHTML = '';
+      q.choices.forEach((choice, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'w-full text-left px-4 py-2 rounded bg-black/40 hover:bg-accent-blue/20 transition-colors';
+        btn.innerHTML = `<span class="font-medium mr-2">${String.fromCharCode(65 + idx)}.</span>${choice}`;
+        btn.addEventListener('click', () => selectAnswer(idx));
+        choicesEl.appendChild(btn);
+      });
+      explanationEl.classList.add('hidden');
+      explanationEl.textContent = '';
+      nextBtn.classList.add('hidden');
+    }
+
+    function selectAnswer(idx) {
+      const q = QUESTIONS[current];
+      const correct = idx === q.answer;
+      Array.from(choicesEl.children).forEach((btn, i) => {
+        if (i === q.answer) {
+          btn.classList.add('bg-green-600');
+        }
+        if (i === idx && !correct) {
+          btn.classList.add('bg-red-600');
+        }
+        btn.disabled = true;
+      });
+      if (correct) score++;
+      explanationEl.innerHTML = (correct ? '<span class="text-green-400 font-semibold">Correct.</span> ' : '<span class="text-red-400 font-semibold">Incorrect.</span> ') + q.explanation;
+      explanationEl.classList.remove('hidden');
+      nextBtn.classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
