@@ -39,3 +39,20 @@ function check () {
         textincorrect.classList.add("displayanswer")
     }
 }
+
+// rotating hero tagline
+document.addEventListener('DOMContentLoaded', function () {
+  var tagline = document.getElementById('dynamic-tagline');
+  if (!tagline) return;
+  var messages = [
+    'Practice real interview questions',
+    'Study with industry professionals',
+    'Get hired by top companies'
+  ];
+  var i = 0;
+  tagline.textContent = messages[i];
+  setInterval(function () {
+    i = (i + 1) % messages.length;
+    tagline.textContent = messages[i];
+  }, 3000);
+});

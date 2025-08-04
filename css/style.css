@@ -5,14 +5,24 @@ body {
 }
 
 :root {
-  /*--main: #1cbbb4;*/
-  /*--main: #FFFCF7;*/
-  --header: #0E2841;
-  --main: #F5EFE1;
-  /*--secondary: #0E2841;*/
-  --secondary: whitesmoke;
-  --textcolor: black;
-  --hovercolor: #1cbbb4;
+  /* Updated color scheme */
+  --header: #0D1B2A;
+  --main: #F9FAFB;
+  --secondary: #FFFFFF;
+  --textcolor: #0D1B2A;
+  --hovercolor: #00BFA6;
+  --accent: #00BFA6;
+}
+
+/* utility classes for new theme */
+.accent-text {
+  color: var(--accent);
+}
+
+.dynamic-message {
+  color: var(--accent);
+  font-weight: 600;
+  min-height: 1.5em;
 }
 
 /* table section */
@@ -692,7 +702,7 @@ a:focus {
 .slider_section .detail-box .btn-box .btn-1 {
   display: inline-block;
   padding: 10px 0;
-  background-color: #ff4f5a;
+  background-color: var(--accent);
   color: var(--textcolor);
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
@@ -702,8 +712,8 @@ a:focus {
 
 .slider_section .detail-box .btn-box .btn-1:hover {
   background-color: transparent;
-  border-color: #ff4f5a;
-  color: #ff4f5a;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .slider_section .detail-box .btn-box .btn-2 {
@@ -765,7 +775,7 @@ a:focus {
 
 .slider_section .carousel_btn-container .carousel-control-prev:hover,
 .slider_section .carousel_btn-container .carousel-control-next:hover {
-  background-color: #ff4f5a;
+  background-color: var(--accent);
 }
 
 .slider_section .carousel_btn-container .carousel-control-prev {
@@ -828,7 +838,7 @@ a:focus {
 .experience_section .detail-box .btn-box .btn-1 {
   display: inline-block;
   padding: 10px 0;
-  background-color: #ff4f5a;
+  background-color: var(--accent);
   color: var(--textcolor);
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
@@ -838,8 +848,8 @@ a:focus {
 
 .experience_section .detail-box .btn-box .btn-1:hover {
   background-color: transparent;
-  border-color: #ff4f5a;
-  color: #ff4f5a;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .experience_section .detail-box .btn-box .btn-2 {
@@ -942,7 +952,7 @@ a:focus {
 .about_section .detail-box a {
   display: inline-block;
   padding: 10px 45px;
-  background-color: #ff4f5a;
+  background-color: var(--accent);
   color: var(--textcolor);
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
@@ -953,8 +963,8 @@ a:focus {
 
 .about_section .detail-box a:hover {
   background-color: transparent;
-  border-color: #ff4f5a;
-  color: #ff4f5a;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .freelance_section .row {
@@ -1002,7 +1012,7 @@ a:focus {
 
 .freelance_section .tab_container .t-link-box .detail-box h5 {
   font-weight: bold;
-  color: #ff4f5a;
+  color: var(--accent);
 }
 
 .freelance_section .tab_container .t-link-box .detail-box h3 {
@@ -1170,7 +1180,7 @@ a:focus {
 .info_section .info_form form button {
   display: inline-block;
   padding: 8px 40px;
-  background-color: #ff4f5a;
+  background-color: var(--accent);
   color: var(--textcolor);
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
@@ -1184,8 +1194,8 @@ a:focus {
 
 .info_section .info_form form button:hover {
   background-color: transparent;
-  border-color: #ff4f5a;
-  color: #ff4f5a;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .info_section .info_contact .link-box {
