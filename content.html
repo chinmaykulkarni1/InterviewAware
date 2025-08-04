@@ -98,106 +98,30 @@
         company: "Intel",
         topic: "Circuit Theory",
         difficulty: "Easy",
-        type: "multiple-choice",
-        question: "What is the current through a 5-ohm resistor when 10V is applied?",
-        options: ["1A", "2A", "5A", "10A"],
-        answer: "2A"
+        link: "questions/question1.html"
       },
       {
         title: "Describe Voltage Regulation",
         company: "Apple",
         topic: "Power Electronics",
         difficulty: "Easy",
-        type: "open",
-        question: "Explain what voltage regulation means in the context of a power supply.",
-        answer: "Voltage regulation is the ability of a power supply to maintain constant output voltage despite changes in load current or input voltage."
+        link: "questions/question2.html"
       }
     ];
 
     const tbody = document.getElementById('question-body');
 
-    questions.forEach((q, idx) => {
+    questions.forEach(q => {
       const tr = document.createElement('tr');
-      tr.className = 'hover:bg-gray-800 cursor-pointer transition';
+      tr.className = 'hover:bg-gray-800 rounded transition';
       tr.innerHTML = `
-        <td class="px-4 py-4 font-semibold text-white"><button class="w-full text-left hover:text-accent-blue" data-index="${idx}">${q.title}</button></td>
+        <td class="px-4 py-4 font-semibold text-white"><a href="${q.link}" class="hover:text-accent-blue">${q.title}</a></td>
         <td class="px-4 py-4">${q.company}</td>
         <td class="px-4 py-4">${q.topic}</td>
         <td class="px-4 py-4">${q.difficulty}</td>
       `;
       tbody.appendChild(tr);
-
-      const detailRow = document.createElement('tr');
-      detailRow.className = 'hidden';
-      detailRow.innerHTML = `
-        <td colspan="4" class="bg-gray-900 p-4">
-          <div id="detail-${idx}" class="overflow-hidden transition-[max-height] duration-500 max-h-0"></div>
-        </td>`;
-      tbody.appendChild(detailRow);
-
-      tr.querySelector('button').addEventListener('click', () => {
-        const panel = document.getElementById(
-          `detail-${idx}`
-        );
-        const open = panel.style.maxHeight && panel.style.maxHeight !== '0px';
-        if (open) {
-          panel.style.maxHeight = '0px';
-          setTimeout(() => detailRow.classList.add('hidden'), 500);
-        } else {
-          renderQuestion(panel, q, idx);
-          detailRow.classList.remove('hidden');
-          panel.style.maxHeight = panel.scrollHeight + 'px';
-        }
-      });
     });
-
-    function renderQuestion(container, q, index) {
-      if (container.dataset.rendered) return;
-      container.dataset.rendered = true;
-      let html = `<p class="mb-4">${q.question}</p>`;
-      if (q.type === 'multiple-choice') {
-        html += '<form class="space-y-2">';
-        q.options.forEach(opt => {
-          html += `
-            <label class="block">
-              <input type="radio" name="q${index}" value="${opt}" class="peer hidden">
-              <div class="p-3 rounded-md bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 transition transform hover:scale-105 peer-checked:ring-2 peer-checked:ring-accent-blue/60">${opt}</div>
-            </label>`;
-        });
-        html += `
-          <button type="button" class="mt-4 px-4 py-2 rounded-full bg-accent-blue text-white hover:bg-opacity-80 transition">Submit</button>
-          <div class="mt-4" id="feedback-${index}"></div>
-        </form>`;
-      } else {
-        html += `
-          <textarea class="w-full p-3 rounded-md bg-gray-800 mb-4 focus:outline-none" rows="4"></textarea>
-          <button type="button" class="px-4 py-2 rounded-full bg-accent-blue text-white hover:bg-opacity-80 transition">Submit</button>
-          <div class="mt-4 text-gray-300"></div>
-        `;
-      }
-      container.innerHTML = html;
-
-      if (q.type === 'multiple-choice') {
-        const form = container.querySelector('form');
-        const submit = container.querySelector('button');
-        const feedback = container.querySelector(`#feedback-${index}`);
-        submit.addEventListener('click', () => {
-          const selected = form.querySelector('input:checked');
-          if (!selected) return;
-          if (selected.value === q.answer) {
-            feedback.innerHTML = '<div class="text-green-400 flex items-center"><svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Correct!</div>';
-          } else {
-            feedback.innerHTML = '<div class="text-red-500">Incorrect. Correct answer: ' + q.answer + '</div>';
-          }
-        });
-      } else {
-        const submit = container.querySelector('button');
-        const feedback = container.querySelector('div.mt-4');
-        submit.addEventListener('click', () => {
-          feedback.innerHTML = `<span class="text-green-400">Answer:</span> ${q.answer}`;
-        });
-      }
-    }
 
     const navEl = document.getElementById('nav');
     window.addEventListener('scroll', () => {

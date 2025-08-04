@@ -112,6 +112,23 @@ const observer = new IntersectionObserver(entries => {
 }, {threshold:0.1});
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+const answerSection = document.querySelector('main > div.mt-8');
+if (answerSection) {
+  answerSection.classList.add('hidden');
+  answerSection.classList.remove('reveal');
+  const form = document.querySelector('form');
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'mt-4 px-4 py-2 rounded-full bg-accent-blue text-white hover:bg-opacity-80 transition';
+  btn.textContent = 'Submit';
+  form.appendChild(btn);
+  btn.addEventListener('click', () => {
+    answerSection.classList.remove('hidden');
+    answerSection.classList.add('animate-fade-in-up');
+  });
+}
+
 </script>
 </body>
 </html>
