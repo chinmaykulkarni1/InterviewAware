@@ -74,16 +74,21 @@
   </nav>
   <main class="pt-32 max-w-3xl mx-auto px-6">
     <h1 class="text-4xl font-bold text-white mb-6 font-display">AI Interviewer</h1>
-    <p class="mb-6">Chat with an AI to practice hardware engineering interview questions.</p>
-    <div id="chat-container" class="bg-black/30 rounded-lg p-4 h-96 overflow-y-auto mb-4"></div>
-    <div class="flex mb-4">
-      <input id="user-input" type="text" class="flex-grow bg-black/30 border border-gray-700 rounded-l-lg p-2 text-white" placeholder="Type your response..." />
-      <button id="send-btn" class="bg-accent-blue text-white px-4 rounded-r-lg hover:bg-opacity-80 transition">Send</button>
+    <p class="mb-6">Practice hardware engineering interview questions with an AI-powered multiple-choice quiz.</p>
+    <div id="setup" class="mb-6">
+      <label for="num-questions" class="block mb-2">Number of Questions</label>
+      <div class="flex space-x-2">
+        <input id="num-questions" type="number" min="1" max="20" value="5" class="w-24 bg-black/30 border border-gray-700 rounded p-2 text-white" />
+        <button id="start-btn" class="bg-accent-blue text-white px-4 rounded hover:bg-opacity-80 transition">Start</button>
+      </div>
     </div>
-    <div class="mb-4">
-      <label for="api-key" class="block mb-2">OpenAI API Key</label>
-      <input id="api-key" type="password" class="w-full bg-black/30 border border-gray-700 rounded p-2 text-white" placeholder="sk-..." />
+    <div id="question-box" class="hidden">
+      <div id="question-text" class="font-semibold mb-4"></div>
+      <div id="choices" class="space-y-2 mb-4"></div>
+      <div id="feedback" class="mb-4"></div>
+      <button id="next-btn" class="bg-accent-blue text-white px-4 py-2 rounded hover:bg-opacity-80 transition hidden">Next Question</button>
     </div>
+    <div id="report" class="hidden"></div>
   </main>
   <footer class="py-12 bg-black text-center text-sm text-gray-500 mt-24">© 2024 InterviewAware. All rights reserved.</footer>
   <script>
@@ -96,65 +101,125 @@
       }
     });
 
-    const chatContainer = document.getElementById('chat-container');
-    const userInput = document.getElementById('user-input');
-    const sendBtn = document.getElementById('send-btn');
-    const apiKeyInput = document.getElementById('api-key');
+    const OPENAI_API_KEY = '';
 
-    const conversation = [
-      {role: 'system', content: 'You are a helpful hardware engineering interviewer. Ask one hardware engineering interview question at a time.'},
-    ];
+    const setupEl = document.getElementById('setup');
+    const startBtn = document.getElementById('start-btn');
+    const numQuestionsInput = document.getElementById('num-questions');
+    const questionBox = document.getElementById('question-box');
+    const questionText = document.getElementById('question-text');
+    const choicesEl = document.getElementById('choices');
+    const feedbackEl = document.getElementById('feedback');
+    const nextBtn = document.getElementById('next-btn');
+    const reportEl = document.getElementById('report');
 
-    function appendMessage(role, text) {
-      const msg = document.createElement('div');
-      msg.className = role === 'assistant' ? 'mb-2 text-accent-blue' : 'mb-2 text-white';
-      msg.textContent = text;
-      chatContainer.appendChild(msg);
-      chatContainer.scrollTop = chatContainer.scrollHeight;
+    let totalQuestions = 0;
+    let currentQuestion = 0;
+    let currentData = null;
+    let stats = {};
+
+    startBtn.addEventListener('click', startInterview);
+    nextBtn.addEventListener('click', handleNext);
+
+    async function startInterview() {
+      totalQuestions = parseInt(numQuestionsInput.value, 10) || 1;
+      currentQuestion = 0;
+      stats = {};
+      setupEl.classList.add('hidden');
+      reportEl.classList.add('hidden');
+      questionBox.classList.remove('hidden');
+      await loadQuestion();
     }
 
-    appendMessage('assistant', 'Hello! I am your hardware interviewer. Ready for a question?');
-
-    async function sendMessage() {
-      const text = userInput.value.trim();
-      if (!text) return;
-      appendMessage('user', text);
-      conversation.push({ role: 'user', content: text });
-      userInput.value = '';
-      const apiKey = apiKeyInput.value.trim();
-      if (!apiKey) {
-        appendMessage('assistant', 'Please provide an API key.');
+    async function loadQuestion() {
+      if (!OPENAI_API_KEY) {
+        feedbackEl.textContent = 'API key not set.';
         return;
       }
+      feedbackEl.textContent = '';
+      nextBtn.classList.add('hidden');
+      choicesEl.innerHTML = '';
+      questionText.textContent = 'Loading question...';
       try {
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + apiKey
+            'Authorization': `Bearer ${OPENAI_API_KEY}`
           },
           body: JSON.stringify({
             model: 'gpt-4o-mini',
-            messages: conversation
+            messages: [
+              { role: 'system', content: 'You are a hardware engineering interviewer.' },
+              { role: 'user', content: 'Provide one multiple-choice hardware engineering interview question formatted as JSON with keys question, choices (array of 4 options), answer (index of correct option 0-3), explanation, and topic.' }
+            ]
           })
         });
         if (!response.ok) {
-          appendMessage('assistant', 'Request failed.');
+          questionText.textContent = 'Failed to fetch question.';
           return;
         }
         const data = await response.json();
-        const reply = data.choices[0].message.content.trim();
-        appendMessage('assistant', reply);
-        conversation.push({ role: 'assistant', content: reply });
+        const msg = data.choices[0].message.content;
+        currentData = JSON.parse(msg);
+        renderQuestion(currentData);
       } catch (err) {
-        appendMessage('assistant', 'Error: ' + err.message);
+        questionText.textContent = 'Error: ' + err.message;
       }
     }
 
-    sendBtn.addEventListener('click', sendMessage);
-    userInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') sendMessage();
-    });
+    function renderQuestion(data) {
+      questionText.textContent = data.question;
+      choicesEl.innerHTML = '';
+      data.choices.forEach((choice, idx) => {
+        const btn = document.createElement('button');
+        btn.textContent = choice;
+        btn.className = 'block w-full text-left px-4 py-2 bg-black/30 hover:bg-accent-blue/20 rounded';
+        btn.addEventListener('click', () => handleAnswer(idx));
+        choicesEl.appendChild(btn);
+      });
+    }
+
+    function handleAnswer(index) {
+      const correct = index === currentData.answer;
+      const correctLetter = String.fromCharCode(65 + currentData.answer);
+      feedbackEl.innerHTML = (correct ? '<span class="text-green-400">Correct!</span>' : `<span class="text-red-400">Incorrect.</span> Correct answer: ${correctLetter}.`) + ` ${currentData.explanation}`;
+      Array.from(choicesEl.children).forEach(btn => btn.disabled = true);
+      recordResult(currentData.topic, correct);
+      nextBtn.classList.remove('hidden');
+    }
+
+    function recordResult(topic, correct) {
+      if (!stats[topic]) stats[topic] = { correct: 0, total: 0 };
+      stats[topic].total++;
+      if (correct) stats[topic].correct++;
+    }
+
+    async function handleNext() {
+      currentQuestion++;
+      if (currentQuestion >= totalQuestions) {
+        showReport();
+      } else {
+        await loadQuestion();
+      }
+    }
+
+    function showReport() {
+      questionBox.classList.add('hidden');
+      reportEl.classList.remove('hidden');
+      const strengths = [];
+      const weaknesses = [];
+      for (const topic in stats) {
+        const s = stats[topic];
+        const ratio = s.correct / s.total;
+        const text = `${topic} (${s.correct}/${s.total})`;
+        if (ratio >= 0.5) strengths.push(text); else weaknesses.push(text);
+      }
+      reportEl.innerHTML = `<h2 class="text-2xl font-display text-white mb-4">Report</h2>
+        <p class="mb-2"><strong>Strengths:</strong> ${strengths.join(', ') || 'None'}</p>
+        <p><strong>Weaknesses:</strong> ${weaknesses.join(', ') || 'None'}</p>`;
+      setupEl.classList.remove('hidden');
+    }
   </script>
 </body>
 </html>
