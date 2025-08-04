@@ -38,7 +38,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body { @apply bg-[#0a0a0a] text-gray-300 font-sans; }
-    .reveal { opacity: 0; }
   </style>
 </head>
 <body class="bg-[#0a0a0a] text-gray-300">
@@ -73,38 +72,133 @@
     </div>
   </nav>
 
-  <main class="pt-32 max-w-4xl mx-auto px-6">
-    <h1 class="reveal text-4xl font-bold text-white mb-6 font-display">Electrical Engineering Interview Questions</h1>
-    <p class="reveal mb-8">Practice with our growing collection of hardware and circuit design questions.</p>
-    <ul class="reveal space-y-4">
-      <li><a href="questions/question1.html" class="text-accent-blue hover:underline">Describe Ohm's Law</a></li>
-      <li><a href="questions/question2.html" class="text-accent-blue hover:underline">Voltage Regulation</a></li>
-      <li><a href="questions/question3.html" class="text-accent-blue hover:underline">Kirchhoff's Laws</a></li>
-      <li><a href="questions/question4.html" class="text-accent-blue hover:underline">Decoupling Capacitors</a></li>
-      <li><a href="questions/question5.html" class="text-accent-blue hover:underline">Calculating Current</a></li>
-      <li><a href="questions/question6.html" class="text-accent-blue hover:underline">AC DC Converters</a></li>
-      <li><a href="questions/question7.html" class="text-accent-blue hover:underline">DC-DC Converters</a></li>
-      <li><a href="questions/question8.html" class="text-accent-blue hover:underline">Ohm's Law - Calculating Current</a></li>
-      <li><a href="questions/question9.html" class="text-accent-blue hover:underline">Ohm's Law - Series Circuit</a></li>
-      <li><a href="questions/question10.html" class="text-accent-blue hover:underline">Ohm's Law - Combination Circuit</a></li>
-      <li><a href="questions/question11.html" class="text-accent-blue hover:underline">Equivalent Resistances</a></li>
-      <li><a href="questions/question12.html" class="text-accent-blue hover:underline">Calculating Power</a></li>
-      <li><a href="questions/question13.html" class="text-accent-blue hover:underline">Op Amp Basics</a></li>
-      <li><a href="questions/question14.html" class="text-accent-blue hover:underline">Op Amp Grounding</a></li>
-      <li><a href="questions/question15.html" class="text-accent-blue hover:underline">Inverting Op Amp Output</a></li>
-      <li><a href="questions/question16.html" class="text-accent-blue hover:underline">Non-Inverting Op Amp Output</a></li>
-      <li><a href="questions/question17.html" class="text-accent-blue hover:underline">Gain of an Inverting Op Amp</a></li>
-      <li><a href="questions/question18.html" class="text-accent-blue hover:underline">Designing a Voltage Follower Circuit</a></li>
-      <li><a href="questions/question19.html" class="text-accent-blue hover:underline">Instrumentation Amp Basics</a></li>
-      <li><a href="questions/question20.html" class="text-accent-blue hover:underline">Instrumentation Amp Basics</a></li>
-      <li><a href="questions/question21.html" class="text-accent-blue hover:underline">Resistance Matching Op-Amps</a></li>
-      <li><a href="questions/question22.html" class="text-accent-blue hover:underline">Common Mode Rejection Ratio</a></li>
-    </ul>
+  <main class="pt-32 max-w-6xl mx-auto px-6">
+    <h1 class="text-4xl font-bold text-white mb-8 font-display">Electrical Engineering Interview Questions</h1>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead>
+          <tr class="text-gray-400 border-b border-gray-700">
+            <th class="px-4 py-3 font-semibold">Title</th>
+            <th class="px-4 py-3 font-semibold">Company</th>
+            <th class="px-4 py-3 font-semibold">Topic</th>
+            <th class="px-4 py-3 font-semibold">Difficulty</th>
+          </tr>
+        </thead>
+        <tbody id="question-body" class="divide-y divide-gray-800"></tbody>
+      </table>
+    </div>
   </main>
 
   <footer class="py-12 bg-black text-center text-sm text-gray-500 mt-24">© 2024 InterviewAware. All rights reserved.</footer>
 
   <script>
+    const questions = [
+      {
+        title: "Ohm’s Law - Calculating Current",
+        company: "Intel",
+        topic: "Circuit Theory",
+        difficulty: "Easy",
+        type: "multiple-choice",
+        question: "What is the current through a 5-ohm resistor when 10V is applied?",
+        options: ["1A", "2A", "5A", "10A"],
+        answer: "2A"
+      },
+      {
+        title: "Describe Voltage Regulation",
+        company: "Apple",
+        topic: "Power Electronics",
+        difficulty: "Easy",
+        type: "open",
+        question: "Explain what voltage regulation means in the context of a power supply.",
+        answer: "Voltage regulation is the ability of a power supply to maintain constant output voltage despite changes in load current or input voltage."
+      }
+    ];
+
+    const tbody = document.getElementById('question-body');
+
+    questions.forEach((q, idx) => {
+      const tr = document.createElement('tr');
+      tr.className = 'hover:bg-gray-800 cursor-pointer transition';
+      tr.innerHTML = `
+        <td class="px-4 py-4 font-semibold text-white"><button class="w-full text-left hover:text-accent-blue" data-index="${idx}">${q.title}</button></td>
+        <td class="px-4 py-4">${q.company}</td>
+        <td class="px-4 py-4">${q.topic}</td>
+        <td class="px-4 py-4">${q.difficulty}</td>
+      `;
+      tbody.appendChild(tr);
+
+      const detailRow = document.createElement('tr');
+      detailRow.className = 'hidden';
+      detailRow.innerHTML = `
+        <td colspan="4" class="bg-gray-900 p-4">
+          <div id="detail-${idx}" class="overflow-hidden transition-[max-height] duration-500 max-h-0"></div>
+        </td>`;
+      tbody.appendChild(detailRow);
+
+      tr.querySelector('button').addEventListener('click', () => {
+        const panel = document.getElementById(
+          `detail-${idx}`
+        );
+        const open = panel.style.maxHeight && panel.style.maxHeight !== '0px';
+        if (open) {
+          panel.style.maxHeight = '0px';
+          setTimeout(() => detailRow.classList.add('hidden'), 500);
+        } else {
+          renderQuestion(panel, q, idx);
+          detailRow.classList.remove('hidden');
+          panel.style.maxHeight = panel.scrollHeight + 'px';
+        }
+      });
+    });
+
+    function renderQuestion(container, q, index) {
+      if (container.dataset.rendered) return;
+      container.dataset.rendered = true;
+      let html = `<p class="mb-4">${q.question}</p>`;
+      if (q.type === 'multiple-choice') {
+        html += '<form class="space-y-2">';
+        q.options.forEach(opt => {
+          html += `
+            <label class="block">
+              <input type="radio" name="q${index}" value="${opt}" class="peer hidden">
+              <div class="p-3 rounded-md bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 transition transform hover:scale-105 peer-checked:ring-2 peer-checked:ring-accent-blue/60">${opt}</div>
+            </label>`;
+        });
+        html += `
+          <button type="button" class="mt-4 px-4 py-2 rounded-full bg-accent-blue text-white hover:bg-opacity-80 transition">Submit</button>
+          <div class="mt-4" id="feedback-${index}"></div>
+        </form>`;
+      } else {
+        html += `
+          <textarea class="w-full p-3 rounded-md bg-gray-800 mb-4 focus:outline-none" rows="4"></textarea>
+          <button type="button" class="px-4 py-2 rounded-full bg-accent-blue text-white hover:bg-opacity-80 transition">Submit</button>
+          <div class="mt-4 text-gray-300"></div>
+        `;
+      }
+      container.innerHTML = html;
+
+      if (q.type === 'multiple-choice') {
+        const form = container.querySelector('form');
+        const submit = container.querySelector('button');
+        const feedback = container.querySelector(`#feedback-${index}`);
+        submit.addEventListener('click', () => {
+          const selected = form.querySelector('input:checked');
+          if (!selected) return;
+          if (selected.value === q.answer) {
+            feedback.innerHTML = '<div class="text-green-400 flex items-center"><svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Correct!</div>';
+          } else {
+            feedback.innerHTML = '<div class="text-red-500">Incorrect. Correct answer: ' + q.answer + '</div>';
+          }
+        });
+      } else {
+        const submit = container.querySelector('button');
+        const feedback = container.querySelector('div.mt-4');
+        submit.addEventListener('click', () => {
+          feedback.innerHTML = `<span class="text-green-400">Answer:</span> ${q.answer}`;
+        });
+      }
+    }
+
     const navEl = document.getElementById('nav');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 10) {
@@ -113,18 +207,6 @@
         navEl.classList.remove('bg-black/70','backdrop-blur');
       }
     });
-
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          entry.target.classList.remove('reveal');
-          entry.target.classList.add('animate-fade-in-up');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {threshold:0.1});
-
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>
