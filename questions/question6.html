@@ -1,297 +1,130 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <!-- Basic -->
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <!-- Mobile Metas -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <!-- Site Metas -->
-  <meta name="keywords" content="" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>InterviewAware</title>
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-
-  <!-- bootstrap core css -->
-  <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
-
-  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
-  <!-- Custom styles for this template -->
-  <link href="../css/style.css" rel="stylesheet" />
-  <!-- responsive style -->
-  <link href="../css/responsive.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif']
+          },
+          colors: {
+            accent: {
+              blue: '#3b82f6',
+              amber: '#f59e0b',
+              sage: '#84cc16',
+              gold: '#fcd34d'
+            }
+          },
+          keyframes: {
+            'fade-in-up': {
+              '0%': { opacity: 0, transform: 'translateY(1rem)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' }
+            }
+          },
+          animation: {
+            'fade-in-up': 'fade-in-up 1s ease-out forwards'
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { @apply bg-[#0a0a0a] text-gray-300 font-sans; }
+    .reveal { opacity: 0; }
+  </style>
 </head>
-
-<body class="sub_page">
-  <div class="hero_area">
-    <!-- header section strats -->
-    <header class="new-header">
-      <div class="header-content">
-        <a class="logo-image" href="#">
-            <img src="../images/samplelogo.png" alt="" />
-        </a>
-        <a href="../index.html" class = "company-name">InterviewAware</a>
-        <div class="header-right">
-          <div class="btn-drop">
-            <form>
-              <button formaction="https://forms.gle/8aHq2fjXJQZP2PDN8">Sign Up</button>
-            </form>
-          </div>
-          <div class="btn-drop">
-            <form>
-              <button formaction="about.html">About Us</button>
-            </form>
-          </div>
-          <div class="btn-drop">
-            <button> Concepts</button>
-            <div class="dropdown-content">
-              <a href="../concept.html">Electrical Engineering</a>
-              <p class="dropdownfiller"> Mechanical Engineering (coming soon)</p>
-              <p class="dropdownfiller"> Civil Engineering (coming soon)</p>
-              <p class="dropdownfiller"> Chemical Engineering (coming soon)</p>
-            </div>
-          </div>
-          <div class="btn-drop">
-            <button> Interview Questions</button>
-            <div class="dropdown-content">
-              <a href="../content.html">Electrical Engineering</a>
-              <p class="dropdownfiller"> Mechanical Engineering (coming soon)</p>
-              <p class="dropdownfiller"> Civil Engineering (coming soon)</p>
-              <p class="dropdownfiller"> Chemical Engineering (coming soon)</p>
-            </div>
-          </div>
-          
+<body class="bg-[#0a0a0a] text-gray-300">
+<nav id="nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+    <a href="../index.html" class="flex items-center space-x-2">
+      <img src="../images/samplelogo.png" class="h-8 w-8" alt="" />
+      <span class="font-display text-white text-xl">InterviewAware</span>
+    </a>
+    <div class="hidden md:flex items-center space-x-6">
+      <a href="../about.html" class="text-gray-300 hover:text-white transition-colors">About</a>
+      <div class="relative group">
+        <button class="flex items-center text-gray-300 hover:text-white transition-colors">Concepts<svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+        <div class="absolute left-0 mt-2 w-56 bg-black/80 backdrop-blur rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+          <a href="../concept.html" class="block px-4 py-2 text-gray-300 hover:bg-accent-blue/20 hover:text-white">Electrical Engineering</a>
+          <span class="block px-4 py-2 text-gray-500">Mechanical Engineering (coming soon)</span>
+          <span class="block px-4 py-2 text-gray-500">Civil Engineering (coming soon)</span>
+          <span class="block px-4 py-2 text-gray-500">Chemical Engineering (coming soon)</span>
         </div>
+      </div>
+      <div class="relative group">
+        <button class="flex items-center text-gray-300 hover:text-white transition-colors">Interview Questions<svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+        <div class="absolute left-0 mt-2 w-64 bg-black/80 backdrop-blur rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+          <a href="../content.html" class="block px-4 py-2 text-gray-300 hover:bg-accent-blue/20 hover:text-white">Electrical Engineering</a>
+          <span class="block px-4 py-2 text-gray-500">Mechanical Engineering (coming soon)</span>
+          <span class="block px-4 py-2 text-gray-500">Civil Engineering (coming soon)</span>
+          <span class="block px-4 py-2 text-gray-500">Chemical Engineering (coming soon)</span>
+        </div>
+      </div>
     </div>
-    </header>
-    <!-- end header section -->
+    <a href="https://forms.gle/8aHq2fjXJQZP2PDN8" class="hidden md:inline-block rounded-full bg-accent-blue text-white px-5 py-2 font-medium hover:bg-opacity-80 transition">Sign Up</a>
   </div>
-
-  <!-- table section -->
-
-  <section class="table_section layout_padding2-top">
-    <!-- <div class = "test_container">
-      <div class="box1">
-        <div class="container">
-          <div class="detail-box">
-            <h5>
-            Stats
-            </h5>
-          </div>
-        </div>
-      </div>
-      <div class="box2">
-        <div class="container">
-          <div class="detail-box">
-            <p>
-            There are many variations of passages of Lorem Ipsum available
-            </p>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <div class="question_section_div layout_padding2-top">
-      <div class = "container">
-        <div class="detail-box">
-          <h3>AC DC Converters</h3>
-            <p>
-            Which component is commonly used for converting AC to DC in power electronics applications?
-            </p>
-            <div class="multiplechoice">
-              <form>
-                <p><input type="radio" id="incorrect" name="multiplechoice">Transistor</p>
-                <p><input type="radio" id="incorrect" name="multiplechoice">Capacitor</p>
-                <p><input type="radio" id="incorrect" name="multiplechoice">Inductor</p>
-                <p><input type="radio" id="correct" name="multiplechoice">Diode</p>
-            </form>
-            </div>
-            <div id="correct-answer" style="display: none;">
-              <h5> Correct ✔ </h5>
-            </div>
-            <div id="incorrect-answer" style="display: none;">
-              <h5> Incorrect ✘</h5>
-            </div>
-            <div id="answer-field" style="display: none;">
-              <h5> Answers</h5>
-              <ul>
-                <li>Diodes are semiconductor devices commonly used for rectification, which is the process of converting alternating current (AC) to direct current (DC) in power electronics applications. </li>
-                <li>When an AC voltage is applied across a diode in a circuit, it allows current to flow in only one direction, effectively converting the negative half-cycles of the AC waveform into positive half-cycles. This process results in a unidirectional flow of current, thereby producing a DC output.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+</nav>
+  <main class="pt-24 max-w-3xl mx-auto px-6">
+    <h1 class="reveal text-4xl font-bold text-white mb-6 font-display">AC DC Converters</h1>
+    <p class="reveal mb-6">Which component is commonly used for converting AC to DC in power electronics applications?</p>
+    <form>
+      <textarea class="reveal w-full h-48 bg-black/30 rounded-lg p-4 text-white placeholder-gray-500" placeholder="Enter your answer here..."></textarea>
+    </form>
+    <div class="reveal mt-8">
+      <h2 class="text-2xl font-semibold text-white mb-4">Answers</h2>
+      <ul class="list-disc list-inside space-y-2">
+        <li>Diodes are semiconductor devices commonly used for rectification, which is the process of converting alternating current (AC) to direct current (DC) in power electronics applications.</li>
+        <li>When an AC voltage is applied across a diode in a circuit, it allows current to flow in only one direction, effectively converting the negative half-cycles of the AC waveform into positive half-cycles. This process results in a unidirectional flow of current, thereby producing a DC output.</li>
+      </ul>
     </div>
-    <div class="submit_section_div layout_padding3-top">
-      <div class="submit-btn-div">
-        <button class="submit-btn" onclick="displayText(); check()"> Check Answer</button>
-      </div>
-      <div class="backbtn">
-        <a href="../content.html"> Back to Questions →</a>
-      </div>
-    </div>
-  </section>
+  </main>
+  <footer class="py-12 bg-black text-center text-sm text-gray-500">© 2024 InterviewAware. All rights reserved.</footer>
+  <script>
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 10) {
+    navEl.classList.add('bg-black/70','backdrop-blur');
+  } else {
+    navEl.classList.remove('bg-black/70','backdrop-blur');
+  }
+});
 
-  <!-- end table section -->
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.remove('reveal');
+      entry.target.classList.add('animate-fade-in-up');
+      observer.unobserve(entry.target);
+    }
+  });
+}, {threshold:0.1});
 
-  <!-- experience section -->
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  <!-- <section class="experience_section layout_padding-top layout_padding2-bottom">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-5">
-          <div class="img-box">
-            <img src="images/experience-img.jpg" alt="">
-          </div>
-        </div>
-        <div class="col-md-7">
-          <div class="detail-box">
-            <div class="heading_container">
-              <h2>
-                Best Experinced Freelancer Here
-              </h2>
-            </div>
-            <p>
-              It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as
-            </p>
-            <div class="btn-box">
-              <a href="" class="btn-1">
-                Read More
-              </a>
-              <a href="" class="btn-2">
-                Hire
-              </a>
-            </div>
-          </div>
-        </div>
+const answerSection = document.querySelector('main > div.mt-8');
+if (answerSection) {
+  answerSection.classList.add('hidden');
+  answerSection.classList.remove('reveal');
+  const form = document.querySelector('form');
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'mt-4 px-4 py-2 rounded-full bg-accent-blue text-white hover:bg-opacity-80 transition';
+  btn.textContent = 'Submit';
+  form.appendChild(btn);
+  btn.addEventListener('click', () => {
+    answerSection.classList.remove('hidden');
+    answerSection.classList.add('animate-fade-in-up');
+  });
+}
 
-      </div>
-    </div>
-  </section> -->
-
-  <!-- end experience section -->
-
-
-  <!-- about section -->
-
-  <!-- <section class="about_section layout_padding-bottom">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-10 col-lg-9 mx-auto">
-          <div class="img-box">
-            <img src="images/about-img.jpg" alt="">
-          </div>
-        </div>
-      </div>
-      <div class="detail-box">
-        <h2>
-          About Spering Company
-        </h2>
-        <p>
-          There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If youThere are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you
-        </p>
-        <a href="">
-          Read More
-        </a>
-      </div>
-    </div>
-  </section> -->
-
-  <!-- end about section -->
-
-  <!-- info section -->
-
-  <section class="info_section ">
-    <div class="info_container layout_padding-top">
-      <div class="container">
-        <div class="info_top">
-          <div class="info_logo">
-            <img src="../images/samplelogo.png" alt="" />
-            <span>
-              Interview.Aware
-            </span>
-          </div>
-          <!-- <div class="social_box">
-            <a href="#">
-              <img src="images/fb.png" alt="">
-            </a>
-            <a href="#">
-              <img src="images/twitter.png" alt="">
-            </a>
-            <a href="#">
-              <img src="images/linkedin.png" alt="">
-            </a>
-            <a href="#">
-              <img src="images/instagram.png" alt="">
-            </a>
-            <a href="#">
-              <img src="images/youtube.png" alt="">
-            </a>
-          </div> -->
-        </div>
-
-        <div class="info_main">
-          <div class="row">
-            <div class="col-md-3 col-lg-2">
-              <div class="info_link-box">
-                <h5>
-                  Useful Links
-                </h5>
-                <ul>
-                  <li class=" active">
-                    <a class="" href="index.html">Home <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="">
-                    <a class="" href="concept.html">Concepts </a>
-                  </li>
-                  <li class="">
-                    <a class="" href="content.html">Interview Questions </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <!-- <div class="col-md-3 ">
-              <h5>
-                Offices
-              </h5>
-              <ul>
-                  <li class=" active">
-                    <a class="" href="index.html">Atlanta <span class="sr-only">(current)</span></a>
-                  </li>
-                </ul>
-            </div> -->
-
-            
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- end info section -->
-
-  <!-- footer section -->
-  <!-- <footer class="container-fluid footer_section ">
-    <div class="container">
-      <p>
-        &copy; <span id="displayDate"></span> All Rights Reserved By
-        <a href="https://html.design/">Free Html Templates</a>
-      </p>
-    </div>
-  </footer> -->
-  <!-- end  footer section -->
-
-
-  <script src="../js/jquery-3.4.1.min.js"></script>
-  <script src="../js/bootstrap.js"></script>
-  <script src="../js/custom.js"></script>
-
-
+</script>
 </body>
-</body>
-
 </html>
