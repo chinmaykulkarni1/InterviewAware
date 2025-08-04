@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ohm's Law - InterviewAware</title>
-  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <title>AI Interviewer - InterviewAware</title>
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -38,22 +38,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body { @apply bg-[#0a0a0a] text-gray-300 font-sans; }
-    .reveal { opacity: 0; }
   </style>
 </head>
 <body class="bg-[#0a0a0a] text-gray-300">
   <nav id="nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
     <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-      <a href="../index.html" class="flex items-center space-x-2">
-        <img src="../images/samplelogo.png" class="h-8 w-8" alt="" />
+      <a href="index.html" class="flex items-center space-x-2">
+        <img src="images/samplelogo.png" class="h-8 w-8" alt="" />
         <span class="font-display text-white text-xl">InterviewAware</span>
       </a>
       <div class="hidden md:flex items-center space-x-6">
-        <a href="../about.html" class="text-gray-300 hover:text-white transition-colors">About</a>
+        <a href="about.html" class="text-gray-300 hover:text-white transition-colors">About</a>
         <div class="relative group">
           <button class="flex items-center text-gray-300 hover:text-white transition-colors">Concepts<svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
           <div class="absolute left-0 mt-2 w-56 bg-black/80 backdrop-blur rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-            <a href="../concept.html" class="block px-4 py-2 text-gray-300 hover:bg-accent-blue/20 hover:text-white">Electrical Engineering</a>
+            <a href="concept.html" class="block px-4 py-2 text-gray-300 hover:bg-accent-blue/20 hover:text-white">Electrical Engineering</a>
             <span class="block px-4 py-2 text-gray-500">Mechanical Engineering (coming soon)</span>
             <span class="block px-4 py-2 text-gray-500">Civil Engineering (coming soon)</span>
             <span class="block px-4 py-2 text-gray-500">Chemical Engineering (coming soon)</span>
@@ -62,33 +61,31 @@
         <div class="relative group">
           <button class="flex items-center text-gray-300 hover:text-white transition-colors">Interview Questions<svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
           <div class="absolute left-0 mt-2 w-64 bg-black/80 backdrop-blur rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-            <a href="../content.html" class="block px-4 py-2 text-gray-300 hover:bg-accent-blue/20 hover:text-white">Electrical Engineering</a>
+            <a href="content.html" class="block px-4 py-2 text-gray-300 hover:bg-accent-blue/20 hover:text-white">Electrical Engineering</a>
             <span class="block px-4 py-2 text-gray-500">Mechanical Engineering (coming soon)</span>
             <span class="block px-4 py-2 text-gray-500">Civil Engineering (coming soon)</span>
             <span class="block px-4 py-2 text-gray-500">Chemical Engineering (coming soon)</span>
           </div>
         </div>
-        <a href="../ai.html" class="text-gray-300 hover:text-white transition-colors">AI Interviewer</a>
+        <a href="ai.html" class="text-gray-300 hover:text-white transition-colors">AI Interviewer</a>
       </div>
       <a href="https://forms.gle/8aHq2fjXJQZP2PDN8" class="hidden md:inline-block rounded-full bg-accent-blue text-white px-5 py-2 font-medium hover:bg-opacity-80 transition">Sign Up</a>
     </div>
   </nav>
-
-  <main class="pt-32 max-w-4xl mx-auto px-6">
-    <h1 class="reveal text-4xl font-bold text-white mb-6 font-display">Understanding Ohm's Law</h1>
-    <p class="reveal mb-4">Ohm's Law stands as a foundational principle in electrical engineering, providing a fundamental understanding of the relationship between voltage, current, and resistance in an electrical circuit.</p>
-    <h2 class="reveal text-2xl font-semibold text-white mb-2">What is Ohm's Law?</h2>
-    <p class="reveal mb-4">Ohm's Law states that the current (I) flowing through a conductor between two points is directly proportional to the voltage (V) across the two points and inversely proportional to the resistance (R) between them. Mathematically, I = V / R.</p>
-    <h2 class="reveal text-2xl font-semibold text-white mb-2">Practical Applications</h2>
-    <p class="reveal mb-4">Understanding Ohm's Law enables engineers and technicians to analyze and design electrical circuits with precision. It facilitates tasks such as calculating current flow, designing circuit protection, and troubleshooting complex systems.</p>
-    <p class="reveal">In summary, Ohm's Law serves as a fundamental principle in electrical engineering, providing a framework for understanding the relationship between voltage, current, and resistance in electrical circuits.</p>
-    <div class="reveal mt-8">
-      <a href="../concept.html" class="text-accent-blue hover:underline">← Back to Concepts</a>
+  <main class="pt-32 max-w-3xl mx-auto px-6">
+    <h1 class="text-4xl font-bold text-white mb-6 font-display">AI Interviewer</h1>
+    <p class="mb-6">Chat with an AI to practice hardware engineering interview questions.</p>
+    <div id="chat-container" class="bg-black/30 rounded-lg p-4 h-96 overflow-y-auto mb-4"></div>
+    <div class="flex mb-4">
+      <input id="user-input" type="text" class="flex-grow bg-black/30 border border-gray-700 rounded-l-lg p-2 text-white" placeholder="Type your response..." />
+      <button id="send-btn" class="bg-accent-blue text-white px-4 rounded-r-lg hover:bg-opacity-80 transition">Send</button>
+    </div>
+    <div class="mb-4">
+      <label for="api-key" class="block mb-2">OpenAI API Key</label>
+      <input id="api-key" type="password" class="w-full bg-black/30 border border-gray-700 rounded p-2 text-white" placeholder="sk-..." />
     </div>
   </main>
-
   <footer class="py-12 bg-black text-center text-sm text-gray-500 mt-24">© 2024 InterviewAware. All rights reserved.</footer>
-
   <script>
     const navEl = document.getElementById('nav');
     window.addEventListener('scroll', () => {
@@ -99,17 +96,65 @@
       }
     });
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          entry.target.classList.remove('reveal');
-          entry.target.classList.add('animate-fade-in-up');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {threshold:0.1});
+    const chatContainer = document.getElementById('chat-container');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+    const apiKeyInput = document.getElementById('api-key');
 
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    const conversation = [
+      {role: 'system', content: 'You are a helpful hardware engineering interviewer. Ask one hardware engineering interview question at a time.'},
+    ];
+
+    function appendMessage(role, text) {
+      const msg = document.createElement('div');
+      msg.className = role === 'assistant' ? 'mb-2 text-accent-blue' : 'mb-2 text-white';
+      msg.textContent = text;
+      chatContainer.appendChild(msg);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    appendMessage('assistant', 'Hello! I am your hardware interviewer. Ready for a question?');
+
+    async function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+      appendMessage('user', text);
+      conversation.push({ role: 'user', content: text });
+      userInput.value = '';
+      const apiKey = apiKeyInput.value.trim();
+      if (!apiKey) {
+        appendMessage('assistant', 'Please provide an API key.');
+        return;
+      }
+      try {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + apiKey
+          },
+          body: JSON.stringify({
+            model: 'gpt-4o-mini',
+            messages: conversation
+          })
+        });
+        if (!response.ok) {
+          appendMessage('assistant', 'Request failed.');
+          return;
+        }
+        const data = await response.json();
+        const reply = data.choices[0].message.content.trim();
+        appendMessage('assistant', reply);
+        conversation.push({ role: 'assistant', content: reply });
+      } catch (err) {
+        appendMessage('assistant', 'Error: ' + err.message);
+      }
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') sendMessage();
+    });
   </script>
 </body>
 </html>
