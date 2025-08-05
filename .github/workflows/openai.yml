@@ -1,0 +1,26 @@
+name: Run OpenAI Node Script
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-openai:
+    runs-on: ubuntu-latest
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run OpenAI script
+        run: node scripts/openai-test.js
