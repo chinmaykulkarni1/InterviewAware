@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>InterviewAware</title>
+  <title>AI Interviewer - InterviewAware</title>
   <link rel="icon" type="image/x-icon" href="images/favicon.ico">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -21,24 +21,12 @@
               sage: '#84cc16',
               gold: '#fcd34d'
             }
-          },
-          keyframes: {
-            'fade-in-up': {
-              '0%': { opacity: 0, transform: 'translateY(1rem)' },
-              '100%': { opacity: 1, transform: 'translateY(0)' }
-            }
-          },
-          animation: {
-            'fade-in-up': 'fade-in-up 1s ease-out forwards'
           }
         }
       }
     }
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body { @apply bg-[#0a0a0a] text-gray-300 font-sans; }
-  </style>
 </head>
 <body class="bg-[#0a0a0a] text-gray-300">
   <nav id="nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
@@ -74,65 +62,72 @@
     </div>
   </nav>
 
-  <main class="pt-32 max-w-6xl mx-auto px-6">
-    <h1 class="text-4xl font-bold text-white mb-8 font-display">Electrical Engineering Interview Questions</h1>
-    <div class="overflow-x-auto">
-      <table class="w-full text-left">
-        <thead>
-          <tr class="text-gray-400 border-b border-gray-700">
-            <th class="px-4 py-3 font-semibold">Title</th>
-            <th class="px-4 py-3 font-semibold">Company</th>
-            <th class="px-4 py-3 font-semibold">Topic</th>
-            <th class="px-4 py-3 font-semibold">Difficulty</th>
-          </tr>
-        </thead>
-        <tbody id="question-body" class="divide-y divide-gray-800"></tbody>
-      </table>
+  <main class="pt-24 max-w-3xl mx-auto px-6">
+    <h1 class="text-4xl font-bold text-white mb-6 font-display">AI Interviewer</h1>
+    <div id="chat" class="space-y-4 mb-4"></div>
+    <div class="flex gap-2">
+      <input id="message" class="flex-grow p-2 rounded bg-gray-800 text-white" placeholder="Type your answer..." />
+      <button id="sendBtn" class="px-4 py-2 bg-accent-blue text-white rounded">Send</button>
     </div>
   </main>
 
-  <footer class="py-12 bg-black text-center text-sm text-gray-500 mt-24">© 2024 InterviewAware. All rights reserved.</footer>
-
   <script>
-    const questions = [
+    const chat = document.getElementById('chat');
+    const messageInput = document.getElementById('message');
+    const sendBtn = document.getElementById('sendBtn');
+    let messages = [
       {
-        title: "Ohm’s Law - Calculating Current",
-        company: "Intel",
-        topic: "Circuit Theory",
-        difficulty: "Easy",
-        link: "questions/question1.html"
-      },
-      {
-        title: "Describe Voltage Regulation",
-        company: "Apple",
-        topic: "Power Electronics",
-        difficulty: "Easy",
-        link: "questions/question2.html"
+        role: 'system',
+        content: 'You are a hardware engineering interviewer. Ask the user one multiple-choice question at a time. After the user responds, tell them if they are correct and briefly explain before asking the next question.'
       }
     ];
 
-    const tbody = document.getElementById('question-body');
+    function appendMessage(role, text) {
+      const div = document.createElement('div');
+      div.className = role === 'user' ? 'text-right' : 'text-left';
+      div.innerHTML = `<span class="block px-3 py-2 rounded ${role === 'user' ? 'bg-accent-blue text-white' : 'bg-gray-800 text-gray-100'}">${text}</span>`;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
 
-    questions.forEach(q => {
-      const tr = document.createElement('tr');
-      tr.className = 'hover:bg-gray-800 rounded transition';
-      tr.innerHTML = `
-        <td class="px-4 py-4 font-semibold text-white"><a href="${q.link}" class="hover:text-accent-blue">${q.title}</a></td>
-        <td class="px-4 py-4">${q.company}</td>
-        <td class="px-4 py-4">${q.topic}</td>
-        <td class="px-4 py-4">${q.difficulty}</td>
-      `;
-      tbody.appendChild(tr);
+    async function sendMessage() {
+      const content = messageInput.value.trim();
+      if (!content) return;
+      appendMessage('user', content);
+      messages.push({ role: 'user', content });
+      messageInput.value = '';
+      sendBtn.disabled = true;
+
+      const res = await fetch('/api/interviewer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages })
+      });
+      const data = await res.json();
+      const reply = data.choices[0].message.content.trim();
+      messages.push({ role: 'assistant', content: reply });
+      appendMessage('assistant', reply);
+      sendBtn.disabled = false;
+      messageInput.focus();
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') sendMessage();
     });
 
-    const navEl = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 10) {
-        navEl.classList.add('bg-black/70','backdrop-blur');
-      } else {
-        navEl.classList.remove('bg-black/70','backdrop-blur');
-      }
-    });
+    // Get the first question
+    (async () => {
+      const res = await fetch('/api/interviewer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages })
+      });
+      const data = await res.json();
+      const first = data.choices[0].message.content.trim();
+      messages.push({ role: 'assistant', content: first });
+      appendMessage('assistant', first);
+    })();
   </script>
 </body>
 </html>
