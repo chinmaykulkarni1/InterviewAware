@@ -66,7 +66,7 @@
     <h1 class="text-4xl font-bold text-white mb-6 font-display">AI Interviewer</h1>
     <div id="chat" class="space-y-4 mb-4"></div>
     <div class="flex gap-2">
-      <input id="message" class="flex-grow p-2 rounded bg-gray-800 text-white" placeholder="Type your answer..." />
+      <input id="message" class="flex-grow p-2 rounded bg-gray-800 text-white" placeholder="Type your response..." />
       <button id="sendBtn" class="px-4 py-2 bg-accent-blue text-white rounded">Send</button>
     </div>
   </main>
@@ -78,7 +78,7 @@
     let messages = [
       {
         role: 'system',
-        content: 'You are a hardware engineering interviewer. Ask the user one multiple-choice question at a time. After the user responds, tell them if they are correct and briefly explain before asking the next question.'
+        content: `You are a hardware engineering interviewer. Start by asking, "Which role are you interviewing for today?" After the user provides a role, generate three multiple-choice hardware engineering questions, delivering them one at a time. For each question, provide four options labeled A-D. When the user answers, respond with whether they are correct, give the correct answer and a brief explanation, then move to the next question. After three questions, give a summary breaking down correct versus incorrect answers and highlight the user's strengths and weaknesses. End the interview after the summary.`
       }
     ];
 
